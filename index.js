@@ -1,8 +1,7 @@
-import express from "express"
-import pg from "pg"
-import { password } from "pg/lib/defaults";
+import express from "express";
+import pg from "pg";
 
-const db = pg.Client({
+const db = new pg.Client({
     user: "postgres",
     host: "localhost",
     database: "books",

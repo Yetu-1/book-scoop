@@ -1,0 +1,11 @@
+#poster{
+    width: 128px;
+    height: 188px;
+    float: left;
+    margin-right: 30px;
+    margin-bottom: 10px;
+}
+
+.book_section {
+    margin-bottom: 50px;
+}
