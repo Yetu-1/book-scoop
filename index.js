@@ -30,19 +30,28 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
-    console.log(req.body);
     const date = new Date();
     try{
         await db.query("INSERT INTO book_info (title, review, rating, date) VALUES ($1, $2, $3, $4);", 
         [req.body.title, req.body.review, req.body.rating, date]);
+        res.redirect("/");
     }catch(err) {
         console.log(err);
     }
-    res.redirect("/");
 });
 
 app.post("/new", (req, res) => {
     res.render("new.ejs");
+});
+
+app.post("/delete", async (req, res) => {
+    const id = req.body.delete;
+    try{
+        await db.query("DELETE FROM book_info WHERE id = $1;", [id]);
+        res.redirect("/");
+    }catch(err) {
+        console.log(err);
+    }
 });
 
 app.listen(port, () => {

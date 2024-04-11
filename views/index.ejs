@@ -24,6 +24,9 @@
                 <p>How strongly I recommend it: <span id="rating"><%= book.rating %></span>/10</p>
             </div>
             <p id="review"><%= book.review %></p>
+            <form class="item" action="/delete" method="post">
+                <button type="submit" name="delete" value="<%= book.id %>" >+</button>
+             </form>
         </div>
         <% } %>
     </div>
