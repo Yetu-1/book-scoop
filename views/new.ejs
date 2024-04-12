@@ -6,8 +6,27 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>ADD NEW BOOK</h1>
-    
+    <h1><%= locals.heading%></h1>
+    <hr>
+    <% if (locals.books) { %>
+        <form id="editForm" method="post" action="/edit">
+          <input type="text" name="title" value="<%=post.title %>">
+          <textarea id="content" rows="10"><%=post.content %></textarea>
+          <input type="text" name="author" value="<%=post.author %>">
+          <button class="full-width" type="submit">
+            <%= submit %>
+          </button>
+        </form>
+        <% } else {%>
+          <form id="newPostForm" method="post" action="/api/posts">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="content" placeholder="Content" required rows="10"></textarea>
+            <input type="text" name="author" placeholder="Author" required>
+            <button class="full-width" type="submit">
+              <%= submit %>
+            </button>
+          </form>
+          <% } %>
     <form action="/add" method="post">
         <input type="text" name="title" placeholder="title"  />
         <input type="text" name="rating" placeholder="rating"  />

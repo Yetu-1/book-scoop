@@ -9,11 +9,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>David Salihu</h1>
+        <h1>Place Holder</h1>
         <h2>Books I've Read</h2>
-        <form class="item" action="/new" method="post">
-            <button class="add" type="submit" name="add" >+</button>
-         </form>
+        <a id="newPostBtn" href="/new">New Post</a>
         <hr>
         <% for(let book of books) { %>
         <div class="book_section">
@@ -25,8 +23,10 @@
             </div>
             <p id="review"><%= book.review %></p>
             <form class="item" action="/delete" method="post">
-                <button type="submit" name="delete" value="<%= book.id %>" >+</button>
+                <button id="editB" type="submit" formaction="/edit" name="edit" value="<%= book.id %>" >Edit</button>
+                <button id="delB" type="submit" name="delete" value="<%= book.id %>" >Delete</button>
              </form>
+            <hr>
         </div>
         <% } %>
     </div>
