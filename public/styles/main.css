@@ -5,7 +5,12 @@
     margin-right: 30px;
     margin-bottom: 10px;
 }
-
+h1,
+h2,
+h3,
+p {
+    margin-bottom: 15px;
+}
 .book_section {
     margin-bottom: 50px;
 }
@@ -16,7 +21,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 50px auto;
     background-color: #fff;
     padding: 20px 40px;
@@ -89,6 +94,12 @@ textarea {
   margin-bottom: 20px;
 }
 
+#sortButton {
+    width: auto;
+    padding: 0px 2px 0px;
+    font-size: 0.8em;
+    background-color: #eff7ff;
+}
 input:focus,
 textarea:focus {
   border-color: #007bff;

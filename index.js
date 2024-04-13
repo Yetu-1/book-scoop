@@ -22,12 +22,37 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
     try{
-        const result = await db.query("SELECT * FROM book_info ORDER BY id ASC ");
+        const result = await db.query("SELECT * FROM book_info ORDER BY id DESC");
         books = result.rows;
         res.render("index.ejs", {books: books});
     }catch(err) {
         console.log(err);
     }
+});
+
+app.post("/sort", async (req, res) => {
+    const sort_type = req.body.sort;
+    let sort_cmd;
+    switch(sort_type) {
+        case "recency":
+            sort_cmd = "id DESC";
+            break;
+        case "title":
+            sort_cmd = "title ASC";
+            break;
+        case "rating":
+            sort_cmd = "rating DESC";
+            break;
+        default:
+            console.log("Invalid sort option");
+    }   
+    try{
+        const result = await db.query("SELECT * FROM book_info ORDER BY " + sort_cmd);
+        books = result.rows;
+        res.render("index.ejs", {books: books});
+    }catch(err) {
+        console.log(err);
+    }    
 });
 
 app.post("/add", async (req, res) => {

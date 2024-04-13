@@ -9,8 +9,18 @@
 </head>
 <body>
     <div class="container">
-        <h1>Place Holder</h1>
-        <h2>Books I've Read</h2>
+        <h1>David Salihu</h1>
+        <h3>Books I've Read</h3>
+        <p><b>This page will constantly update as I read more</b>, so bookmark it if you want to check back in a few months.</p>
+            <form action="/sort" method="post">
+                <label for="sort">Sorted with my top recommendations up top. Sort by : </label>
+                <select name="sort" id="cars">
+                  <option value="title">Title</option>
+                  <option value="recency">Recency</option>
+                  <option value="rating">Rating</option>
+                </select>
+                <input id="sortButton" type="submit" value="Sort">
+            </form>
         <a id="newPostBtn" href="/new">New Post</a>
         <hr>
         <% for(let book of books) { %>
@@ -25,7 +35,7 @@
             <form class="item" action="/delete" method="post">
                 <button id="editB" type="submit" formaction="/edit" name="edit" value="<%= book.id %>" >Edit</button>
                 <button id="delB" type="submit" name="delete" value="<%= book.id %>" >Delete</button>
-             </form>
+            </form>
             <hr>
         </div>
         <% } %>
