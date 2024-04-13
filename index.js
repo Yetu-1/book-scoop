@@ -25,10 +25,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // get link to book cover
 async function getBookCover(book_name) {
-    let response = await axios.get(`https://openlibrary.org/search.json?q="${book_name}"`); // make api req to get book information
-    const book = response.data.docs[0]; // select first book on list
-    const key = book.cover_edition_key;
-    return `https://covers.openlibrary.org/b/olid/${key}-M.jpg`; // construct link to book cover (medium size)
+    try{
+        let response = await axios.get(`https://openlibrary.org/search.json?q="${book_name}"`); // make api req to get book information
+        const book = response.data.docs[0]; // select first book on list
+        const key = book.cover_edition_key;
+        return `https://covers.openlibrary.org/b/olid/${key}-M.jpg`; // construct link to book cover (medium size)
+    }catch(err) {
+        console.log(err);
+    }
 }
 
 app.get("/", async (req, res) => {
@@ -74,8 +78,8 @@ app.post("/add", async (req, res) => {
     const date = new Date();
     const date_string = date.toISOString().slice(0, 10);
 
-    const img = await getBookCover(req.body.title);
     try{
+        const img = await getBookCover(req.body.title);
         await db.query("INSERT INTO book_info (title, review, rating, date, img) VALUES ($1, $2, $3, $4, $5);", 
         [req.body.title, req.body.review, req.body.rating, date_string, img]);
         res.redirect("/");
@@ -109,8 +113,8 @@ app.post("/edit", async (req, res) => {
 
 // update database with updated book review
 app.post("/update", async (req, res) => {
-    const img = await getBookCover(req.body.title);
     try{
+        const img = await getBookCover(req.body.title);
         await db.query("UPDATE book_info SET (title, review, rating, img) = ($1, $2, $3, $4) WHERE id = $5;", 
         [req.body.title, req.body.review, req.body.rating, img, req.body.book_id]);
         res.redirect("/");
