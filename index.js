@@ -1,6 +1,7 @@
 import express from "express";
 import pg from "pg";
 import bodyParser from "body-parser"
+import axios from "axios"
 
 // create postgres database client
 const db = new pg.Client({
@@ -22,7 +23,14 @@ const port = 3000;
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// get book review homepage
+// get link to book cover
+async function getBookCover(book_name) {
+    let response = await axios.get(`https://openlibrary.org/search.json?q="${book_name}"`); // make api req to get book information
+    const book = response.data.docs[0]; // select first book on list
+    const key = book.cover_edition_key;
+    return `https://covers.openlibrary.org/b/olid/${key}-M.jpg`; // construct link to book cover (medium size)
+}
+
 app.get("/", async (req, res) => {
     try{
         // get all book reviews by id in descending order
@@ -64,9 +72,10 @@ app.post("/sort", async (req, res) => {
 // insert new book review into database
 app.post("/add", async (req, res) => {
     const date = new Date();
+    const img = await getBookCover(req.body.title);
     try{
-        await db.query("INSERT INTO book_info (title, review, rating, date) VALUES ($1, $2, $3, $4);", 
-        [req.body.title, req.body.review, req.body.rating, date]);
+        await db.query("INSERT INTO book_info (title, review, rating, date, img) VALUES ($1, $2, $3, $4, $5);", 
+        [req.body.title, req.body.review, req.body.rating, date, img]);
         res.redirect("/");
     }catch(err) {
         console.log(err);
@@ -92,7 +101,7 @@ app.post("/delete", async (req, res) => {
 // route to edit book review page passing in book id
 app.post("/edit", async (req, res) => {
     const book_id = parseInt(req.body.edit);
-    const book_to_edit = books.find((book) => book.id = book_id);
+    const book_to_edit = books.find((book) => book.id == book_id); // find selected book in books array
     res.render("new.ejs", {heading: "Edit Review", book: book_to_edit, submit: "Edit Post"})
 });
 
@@ -100,10 +109,10 @@ app.post("/edit", async (req, res) => {
 app.post("/update", async (req, res) => {
     const date = new Date();
     console.log(req.body);
-
+    const img = await getBookCover(req.body.title);
     try{
-        await db.query("UPDATE book_info SET (title, review, rating, date) = ($1, $2, $3, $4) WHERE id = $5;", 
-        [req.body.title, req.body.review, req.body.rating, date, req.body.book_id]);
+        await db.query("UPDATE book_info SET (title, review, rating, date, img) = ($1, $2, $3, $4, $5) WHERE id = $6;", 
+        [req.body.title, req.body.review, req.body.rating, date, img, req.body.book_id]);
         res.redirect("/");
     }catch(err) {
         console.log(err);

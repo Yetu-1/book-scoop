@@ -13,7 +13,7 @@
             <form id="editForm" method="post" action="/update">
             <input name="book_id" type="hidden" value="<%= book.id%>">
             <input type="text" name="title" value="<%= book.title %>">
-            <textarea id="content" rows="10"><%=book.review %></textarea>
+            <textarea id="content" name="review" rows="10"><%=book.review %></textarea>
             <input type="text" name="rating" value="<%= book.rating %>">
             <button class="full-width" type="submit">
                 <%= submit %>

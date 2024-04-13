@@ -25,7 +25,7 @@
         <hr>
         <% for(let book of books) { %>
         <div class="book_section">
-            <img id="poster" src="assets/img1.png">
+            <img id="poster" src="<%= book.img %>" />
             <h2 id="title"><%= book.title %></h1>
             <div class="date_rating">
                 <p>Date read: <span id="date"><%= book.date %></span>. </p>
