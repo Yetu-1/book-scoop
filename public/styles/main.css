@@ -104,3 +104,7 @@ input:focus,
 textarea:focus {
   border-color: #007bff;
 }
+
+#rating_text {
+  font-style: italic;
+}

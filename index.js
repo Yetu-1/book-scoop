@@ -72,10 +72,12 @@ app.post("/sort", async (req, res) => {
 // insert new book review into database
 app.post("/add", async (req, res) => {
     const date = new Date();
+    const date_string = date.toISOString().slice(0, 10);
+
     const img = await getBookCover(req.body.title);
     try{
         await db.query("INSERT INTO book_info (title, review, rating, date, img) VALUES ($1, $2, $3, $4, $5);", 
-        [req.body.title, req.body.review, req.body.rating, date, img]);
+        [req.body.title, req.body.review, req.body.rating, date_string, img]);
         res.redirect("/");
     }catch(err) {
         console.log(err);
@@ -107,12 +109,10 @@ app.post("/edit", async (req, res) => {
 
 // update database with updated book review
 app.post("/update", async (req, res) => {
-    const date = new Date();
-    console.log(req.body);
     const img = await getBookCover(req.body.title);
     try{
-        await db.query("UPDATE book_info SET (title, review, rating, date, img) = ($1, $2, $3, $4, $5) WHERE id = $6;", 
-        [req.body.title, req.body.review, req.body.rating, date, img, req.body.book_id]);
+        await db.query("UPDATE book_info SET (title, review, rating, img) = ($1, $2, $3, $4) WHERE id = $5;", 
+        [req.body.title, req.body.review, req.body.rating, img, req.body.book_id]);
         res.redirect("/");
     }catch(err) {
         console.log(err);
